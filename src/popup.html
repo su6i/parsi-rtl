@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    width: 250px;
+    margin: 0;
+    padding: 14px;
+    font: 13px/1.5 ui-sans-serif, system-ui, sans-serif;
+    background: Canvas;
+    color: CanvasText;
+  }
+  h1 { font-size: 13px; margin: 0 0 10px; font-weight: 600; }
+  .row { display: flex; justify-content: space-between; gap: 10px; margin: 6px 0; }
+  .muted { opacity: .65; }
+  .host { font-family: ui-monospace, Menlo, monospace; word-break: break-all; }
+  .badge { font-weight: 600; }
+  .on { color: #1a7f37; }
+  .off { color: #b35900; }
+  button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 7px;
+    font: inherit;
+    border-radius: 7px;
+    border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  button:hover { background: color-mix(in srgb, CanvasText 8%, transparent); }
+  /* One grid for both rows — `display: contents` lets each hint's own children
+     land in it, so the key column sizes to the widest key and the two rows line
+     up instead of each row measuring itself. */
+  .hints { margin-top: 12px; padding-top: 10px; border-top: 1px solid color-mix(in srgb, CanvasText 12%, transparent); display: grid; grid-template-columns: max-content 1fr; align-items: baseline; gap: 7px 8px; font-size: 11px; }
+  .hint { display: contents; }
+  .hint span { opacity: .65; }
+  .hint[hidden] { display: none; }
+  kbd {
+    display: inline-block;
+    padding: 1px 5px;
+    font: 500 10.5px/1.5 ui-monospace, Menlo, monospace;
+    border: 1px solid color-mix(in srgb, CanvasText 28%, transparent);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: color-mix(in srgb, CanvasText 6%, transparent);
+    white-space: nowrap;
+    justify-self: start;
+  }
+  .foot { margin-top: 10px; padding-top: 8px; border-top: 1px solid color-mix(in srgb, CanvasText 12%, transparent); text-align: center; }
+  .foot a { font-size: 10.5px; color: inherit; opacity: .45; text-decoration: none; }
+  .foot a:hover { opacity: .85; text-decoration: underline; }
+</style>
+</head>
+<body>
+  <h1>Parsi RTL</h1>
+  <div class="row"><span class="muted">Site</span><span class="host" id="host">…</span></div>
+  <div class="row"><span class="muted">Status</span><span class="badge" id="status">…</span></div>
+  <div class="row"><span class="muted">Blocks set to RTL</span><span id="fixed">…</span></div>
+  <label class="row" for="font"><span class="muted">Vazirmatn font</span><input type="checkbox" id="font"></label>
+  <button id="toggle" hidden></button>
+  <div class="hints">
+    <div class="hint"><kbd id="shortcut">Alt+R</kbd><span>turn this site on or off</span></div>
+    <div class="hint"><kbd>right-click</kbd><span>force a block's direction</span></div>
+  </div>
+  <div class="foot"><a href="https://github.com/su6i/parsi-rtl" target="_blank" rel="noopener">github.com/su6i/parsi-rtl</a></div>
+  <script src="popup.js"></script>
+</body>
+</html>

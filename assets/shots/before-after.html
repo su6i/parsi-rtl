@@ -1,0 +1,45 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-arabic-400-normal.woff2') format('woff2'); unicode-range:U+0600-06FF,U+200C-200F; }
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-latin-400-normal.woff2') format('woff2'); unicode-range:U+0000-00FF; }
+  * { box-sizing:border-box; }
+  body { margin:0; width:1280px; height:800px; background:#eef1f6; font:16px/1.7 -apple-system,system-ui,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; }
+  h1 { font-size:30px; margin:0; letter-spacing:-.4px; }
+  h1 small { display:block; font-size:16px; font-weight:400; color:#5b6472; margin-top:8px; letter-spacing:0; }
+  .pair { display:flex; gap:22px; }
+  .card { width:590px; background:#fff; border-radius:16px; box-shadow:0 8px 28px rgba(20,30,50,.10); overflow:hidden; }
+  .cap { padding:11px 18px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .bad .cap { background:#fdecec; color:#a3232b; }
+  .good .cap { background:#e8f6ec; color:#1a7f37; }
+  .body { padding:16px 22px 22px; }
+  ol { margin:0; padding-inline-start:24px; }
+  li { margin:9px 0; }
+  .site p { unicode-bidi:plaintext; text-align:start; margin:0; }
+  .good li { direction:rtl!important; text-align:right!important; unicode-bidi:isolate!important; font-family:'Vaz',sans-serif; }
+  .good li * { direction:inherit!important; unicode-bidi:inherit!important; }
+  .bad li { direction:rtl; font-family:'Vaz',sans-serif; }
+  b { font-weight:600; }
+</style>
+<h1>Right-aligned is not right-to-left
+  <small>A Persian line that starts with an English term is still Persian — most fixes get this wrong.</small>
+</h1>
+<div class="pair">
+  <div class="card bad">
+    <div class="cap">✕ dir="rtl" alone — you have to read from the left</div>
+    <div class="body"><ol class="site">
+      <li><p><b>Orpheus TTS 3B</b> — احتمالاً فارسی native داره (Llama 3.2 tokenizer)</p></li>
+      <li><p><b>OmniVoice</b> — بهترین گزینه (native، ۶۴۶ زبان)</p></li>
+    </ol></div>
+  </div>
+  <div class="card good">
+    <div class="cap">✓ Parsi RTL — reads right-to-left, as written</div>
+    <div class="body"><ol class="site">
+      <li><p><b>Orpheus TTS 3B</b> — احتمالاً فارسی native داره (Llama 3.2 tokenizer)</p></li>
+      <li><p><b>OmniVoice</b> — بهترین گزینه (native، ۶۴۶ زبان)</p></li>
+    </ol></div>
+  </div>
+</div>
+<div style="font-size:14px;color:#5b6472;max-width:900px;text-align:center">
+  The direction of a line comes from its <b>language</b>, not from its first character.
+  Parsi RTL decides per block by script ratio — and never touches your code blocks.
+</div>

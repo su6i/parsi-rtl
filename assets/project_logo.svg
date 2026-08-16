@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 260" width="420" height="260" role="img" aria-label="Parsi RTL logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d3557"/>
+      <stop offset="1" stop-color="#0f1c2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#70c7d1"/>
+      <stop offset="1" stop-color="#3f8fa3"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="10" y="10" width="400" height="240" rx="34" fill="url(#bg)"/>
+
+  <!-- text lines, right-aligned: the visual signature of a right-to-left block -->
+  <g fill="url(#accent)">
+    <rect x="150" y="62"  width="200" height="15" rx="7.5"/>
+    <rect x="196" y="95"  width="154" height="15" rx="7.5"/>
+    <rect x="128" y="128" width="222" height="15" rx="7.5"/>
+  </g>
+
+  <!-- one line held left-to-right: code never flips -->
+  <rect x="70" y="161" width="96" height="15" rx="7.5" fill="#4a5c74"/>
+
+  <!-- reading direction -->
+  <g stroke="#f0b45a" stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M96 210 H330"/>
+    <path d="M124 192 L96 210 L124 228"/>
+  </g>
+</svg>

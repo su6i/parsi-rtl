@@ -1,0 +1,21 @@
+{
+  "name": "parsi-rtl",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome/Firefox MV3 extension: correct direction and typography for right-to-left text on any website.",
+  "scripts": {
+    "test": "node --test",
+    "render:fixture": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=1000,460 --screenshot=test/visual/cascade.png test/visual/cascade.html",
+    "render:shots": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=1280,800 --screenshot=assets/shots/before-after.png assets/shots/before-after.html && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --window-size=1280,800 --screenshot=assets/shots/popup.png assets/shots/popup.html",
+    "package": "rm -f \"$HOME/Downloads/parsi-rtl-$npm_package_version.zip\" && zip -r \"$HOME/Downloads/parsi-rtl-$npm_package_version.zip\" manifest.json src -x '*.DS_Store' && echo \"→ $HOME/Downloads/parsi-rtl-$npm_package_version.zip\"",
+    "lint:md": "markdownlint --config .markdownlint.json README.md 'docs/**/*.md' CHANGELOG.md PRIVACY.md",
+    "stage:firefox": "node tools/stage-firefox.mjs",
+    "lint:ext": "npm run stage:firefox && web-ext lint --source-dir=build/firefox",
+    "sign:firefox": "npm run stage:firefox && web-ext sign --channel=listed --source-dir=build/firefox --artifacts-dir=\"$HOME/Downloads\""
+  },
+  "homepage": "https://github.com/su6i/parsi-rtl",
+  "license": "MIT",
+  "devDependencies": {
+    "web-ext": "^10.6.0"
+  }
+}

@@ -1,0 +1,138 @@
+/* Parsi RTL — direction and font corrections for AI chat UIs.
+ *
+ * Two hard rules shape this file:
+ *   1. Never use the universal selector for font-family. `*` also hits icon
+ *      fonts (Material Symbols, Lucide, Font Awesome, each site's own glyph
+ *      font) and every icon degenerates into a tofu box.
+ *   2. Never set a global direction. Direction is decided per block by
+ *      src/rtl.js, which writes dir="rtl"/"ltr" on the element itself; CSS
+ *      only styles what that decision implies.
+ */
+
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-arabic-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-arabic-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-arabic-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+
+/* The Latin subsets carry the same metrics, so mixed Persian/English lines
+ * keep one baseline and one x-height instead of visibly switching fonts. */
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+@font-face {
+  font-family: 'Vazirmatn RTL';
+  src: url('fonts/vazirmatn-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* Font: only on blocks the script decided are RTL, and only while the font
+ * override is on (the popup can turn it off without losing the direction fix).
+ * Everything else — icons, buttons, LTR text — keeps the site's typography. */
+html[data-parsi-font='on'] [data-parsi-rtl='rtl'] {
+  font-family: 'Vazirmatn RTL', ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.85;
+}
+
+[data-parsi-rtl='rtl'] {
+  /* isolate, not plaintext: the direction is already decided from the
+   * block's language, so the first-strong heuristic must not override it.
+   * !important because chat UIs routinely ship their own direction rules with
+   * higher specificity than an attribute selector. */
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: isolate !important;
+}
+
+/* THE failure this extension exists to prevent, in its subtlest form: the
+ * block gets dir="rtl" (marker and alignment move to the right) but an inner
+ * <p>/<span> carries the site's own `unicode-bidi: plaintext` — or an explicit
+ * `direction: ltr` — so the RUN ORDER is still computed by first-strong from
+ * that inner node. The result reads left-to-right inside a right-aligned
+ * block: the leading Latin term lands at the far left, the trailing
+ * parenthetical at the right. Inner nodes must inherit our decision. */
+[data-parsi-rtl='rtl'] *:not(pre):not(code):not(kbd):not(samp):not(pre *):not(code *):not([data-parsi-skip]) {
+  direction: inherit !important;
+  unicode-bidi: inherit !important;
+}
+
+/* Lists get their markers on the right side automatically once dir="rtl"
+ * lands on the list element itself. */
+ul[data-parsi-rtl='rtl'],
+ol[data-parsi-rtl='rtl'] {
+  padding-right: 1.5em;
+  padding-left: 0;
+}
+
+/* Code is never Persian prose. Force it back regardless of what surrounds it. */
+[data-parsi-rtl='rtl'] pre,
+[data-parsi-rtl='rtl'] code,
+[data-parsi-rtl='rtl'] kbd,
+[data-parsi-rtl='rtl'] samp,
+[data-parsi-rtl='rtl'] table {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate !important;
+}
+
+[data-parsi-rtl='rtl'] pre,
+[data-parsi-rtl='rtl'] code,
+[data-parsi-rtl='rtl'] kbd,
+[data-parsi-rtl='rtl'] samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Blockquotes flip their border side with the text. */
+[data-parsi-rtl='rtl'] blockquote {
+  border-left: none;
+  border-right: 3px solid currentColor;
+  padding-right: 1em;
+  padding-left: 0;
+}
+
+/* The composer. dir is set live by the script as you type; these rules only
+ * make the caret and placeholder follow it. */
+[data-parsi-rtl='rtl'][contenteditable],
+textarea[data-parsi-rtl='rtl'],
+input[data-parsi-rtl='rtl'] {
+  text-align: right;
+}

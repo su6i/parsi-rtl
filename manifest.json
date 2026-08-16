@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "Parsi RTL",
+  "version": "1.0.0",
+  "description": "Correct text direction and Persian font for RTL languages on any site — script-ratio detection, not first-strong guessing.",
+  "icons": {
+    "16": "src/icon16.png",
+    "48": "src/icon48.png",
+    "128": "src/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "css": [
+        "src/rtl.css"
+      ],
+      "js": [
+        "src/rtl.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/fonts/*.woff2"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "contextMenus"
+  ],
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_title": "Parsi RTL",
+    "default_icon": {
+      "16": "src/icon16.png",
+      "48": "src/icon48.png",
+      "128": "src/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "commands": {
+    "toggle-site": {
+      "suggested_key": {
+        "default": "Alt+R"
+      },
+      "description": "Turn Parsi RTL on/off for this site"
+    }
+  },
+  "homepage_url": "https://github.com/su6i/parsi-rtl"
+}

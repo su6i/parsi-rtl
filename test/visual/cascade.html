@@ -1,0 +1,42 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>parsi-rtl — direction cascade fixture</title>
+<!--
+  Unit tests cover the direction DECISION; they cannot cover the CSS cascade,
+  and the cascade is where the subtlest failure lives: a chat UI that ships
+  `unicode-bidi: plaintext` on its message paragraphs re-derives direction from
+  the first strong character of the INNER node, so the block looks right-aligned
+  while its runs are still ordered left-to-right.
+
+  Render with:  npm run render:fixture   (writes test/visual/cascade.png)
+  Read it as:   in B the model name must sit next to the number on the RIGHT,
+                and the trailing parenthetical must end up on the LEFT.
+-->
+<style>
+  body { font: 16px/2 -apple-system, system-ui, sans-serif; margin: 24px; }
+  /* What the site ships — this is the rule that defeats a naive dir="rtl". */
+  .site p { unicode-bidi: plaintext; text-align: start; }
+  section { border: 1px solid #ccc; padding: 8px 16px; margin-bottom: 18px; }
+  h3 { font: 600 13px sans-serif; color: #666; margin: 4px 0 8px; }
+</style>
+<link rel="stylesheet" href="../../src/rtl.css">
+<section>
+  <h3>A — dir="rtl" only (the bug: reads left-to-right inside a right-aligned block)</h3>
+  <ol class="site">
+    <li dir="rtl"><p><b>Orpheus TTS 3B</b> — احتمالاً فارسی native داره (Llama 3.2 tokenizer + Emilia dataset)</p></li>
+  </ol>
+</section>
+<section>
+  <h3>B — dir="rtl" + data-parsi-rtl (what the extension applies)</h3>
+  <ol class="site">
+    <li dir="rtl" data-parsi-rtl="rtl"><p><b>Orpheus TTS 3B</b> — احتمالاً فارسی native داره (Llama 3.2 tokenizer + Emilia dataset)</p></li>
+  </ol>
+</section>
+<section>
+  <h3>C — code inside an RTL block must stay left-to-right</h3>
+  <ol class="site">
+    <li dir="rtl" data-parsi-rtl="rtl"><p>برای پچ باید <code>getRawHeader().headerString</code> را هش کنی</p>
+      <pre>const hash = sha256(header);</pre>
+    </li>
+  </ol>
+</section>

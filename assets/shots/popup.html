@@ -1,0 +1,46 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  body { margin:0; width:1280px; height:800px; background:#111827; color:#e5e7eb;
+         font:16px/1.7 -apple-system,system-ui,sans-serif; display:flex; align-items:center; justify-content:center; gap:60px; }
+  .txt { width:520px; }
+  h1 { font-size:32px; margin:0 0 14px; letter-spacing:-.4px; }
+  ul { padding-inline-start:20px; margin:0; color:#c7d0dc; font-size:17px; }
+  li { margin:10px 0; }
+  b { color:#fff; }
+  .pop { width:300px; background:#fff; color:#111; border-radius:12px; box-shadow:0 18px 50px rgba(0,0,0,.45); padding:16px; font-size:13px; }
+  .pop h2 { font-size:13px; margin:0 0 10px; }
+  .row { display:flex; justify-content:space-between; margin:6px 0; }
+  .muted { opacity:.65; }
+  .on { color:#1a7f37; font-weight:600; }
+  .mono { font-family:ui-monospace,Menlo,monospace; }
+  .btn { margin-top:12px; padding:7px; text-align:center; border:1px solid #ccc; border-radius:7px; }
+  .foot { margin-top:10px; padding-top:8px; border-top:1px solid #eee; text-align:center; font-size:10.5px; opacity:.45; }
+  .hints { margin-top:12px; padding-top:10px; border-top:1px solid #eee; display:grid;
+           grid-template-columns:max-content 1fr; align-items:baseline; gap:7px 8px; font-size:11px; }
+  .hint { display:contents; }
+  .hint span { opacity:.65; }
+  kbd { display:inline-block; padding:1px 5px; font:500 10.5px/1.5 ui-monospace,Menlo,monospace;
+        border:1px solid #c9c9c9; border-bottom-width:2px; border-radius:4px; background:#f4f4f5; white-space:nowrap; justify-self:start; }
+</style>
+<div class="txt">
+  <h1>You can always tell it is working</h1>
+  <ul>
+    <li>Chrome greys the icon of every extension without a popup — so this one <b>reports its own state</b>: live in this tab, and how many blocks it switched.</li>
+    <li><b>Alt+R</b> turns the current site off and on.</li>
+    <li><b>Right-click</b> any block to force its direction by hand.</li>
+    <li>Keep the direction fix but drop the font, with one checkbox.</li>
+  </ul>
+</div>
+<div class="pop">
+  <h2>Parsi RTL</h2>
+  <div class="row"><span class="muted">Site</span><span class="mono">chat.deepseek.com</span></div>
+  <div class="row"><span class="muted">Status</span><span class="on">active</span></div>
+  <div class="row"><span class="muted">Blocks set to RTL</span><span>34</span></div>
+  <div class="row"><span class="muted">Vazirmatn font</span><span>☑</span></div>
+  <div class="btn">Turn off for this site</div>
+  <div class="hints">
+    <div class="hint"><kbd>⌥R</kbd><span>turn this site on or off</span></div>
+    <div class="hint"><kbd>right-click</kbd><span>force a block's direction</span></div>
+  </div>
+  <div class="foot">github.com/su6i/parsi-rtl</div>
+</div>
