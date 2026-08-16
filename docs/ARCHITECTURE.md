@@ -171,3 +171,14 @@ the separate `gecko_android` floor. Verify before every submission:
 npm run lint:ext       # stages build/firefox, then addons-linter — 0 errors, 0 warnings
 npm run sign:firefox   # needs WEB_EXT_API_KEY / WEB_EXT_API_SECRET in the env
 ```
+
+## Toolchain
+
+Every linter and packer the scripts call is a `devDependency`, so `npm ci` is
+the whole setup and a checkout lints identically on any machine — nothing is
+read from the global `PATH`:
+
+```bash
+npm test               # node --test — 14 tests
+npm run lint:md        # markdownlint over README, docs/, CHANGELOG, PRIVACY
+```
