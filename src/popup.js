@@ -79,10 +79,21 @@ el.toggle.addEventListener('click', async () => {
         : hosts.concat(host);
 
     await chrome.storage.local.set({ [DISABLED_KEY]: next });
-    // The content script reads this once at startup, so the page must reload
-    // for the change to take effect.
-    chrome.tabs.reload(tab.id);
-    window.close();
+
+    // Toggle the live page rather than reloading it: the tab may hold a prompt
+    // the user is halfway through typing. The popup then stays open and repaints
+    // so the switch shows its own effect instead of closing on a guess.
+    try {
+        await chrome.tabs.sendMessage(tab.id, {
+            type: 'parsi-set-enabled',
+            enabled: !next.includes(host)
+        });
+        await render();
+    } catch (e) {
+        // No content script listening in this tab — only a reload can apply it.
+        chrome.tabs.reload(tab.id);
+        window.close();
+    }
 });
 
 // Font override is independent of the direction fix: some users want their

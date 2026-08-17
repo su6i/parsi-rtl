@@ -12,6 +12,23 @@ const path = require('node:path');
 
 const repo = path.join(__dirname, '..');
 const chrome = JSON.parse(readFileSync(path.join(repo, 'manifest.json'), 'utf8'));
+const pkg = JSON.parse(readFileSync(path.join(repo, 'package.json'), 'utf8'));
+
+test('the version is the same everywhere a reader or a store can see it', () => {
+    // Drift here is silent and only shows up after submission, so it is pinned:
+    // `npm run sync:version` writes all of these from package.json.
+    assert.equal(chrome.version, pkg.version, 'manifest.json is on a different version');
+
+    for (const readme of ['README.md', 'docs/fa/README.fa.md']) {
+        const text = readFileSync(path.join(repo, readme), 'utf8');
+        const badges = [...text.matchAll(/badge\/Version-([^-]+)-blue\.svg/g)].map((m) => m[1]);
+        const labels = [...text.matchAll(/alt="Version: ([^"]+)"/g)].map((m) => m[1]);
+        assert.ok(badges.length > 0, `${readme} lost its version badge`);
+        for (const found of badges.concat(labels)) {
+            assert.equal(found, pkg.version, `${readme} badge is stale`);
+        }
+    }
+});
 
 test('the canonical manifest is Chrome-clean: a service worker, no MV2 scripts key', () => {
     assert.equal(chrome.manifest_version, 3);

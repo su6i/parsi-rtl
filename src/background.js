@@ -22,9 +22,20 @@ async function toggleHost(tab) {
         ? hosts.filter((h) => h !== host)
         : hosts.concat(host);
     await chrome.storage.local.set({ [DISABLED_KEY]: next });
-    // The content script reads the switch once at startup, so the page has to
-    // reload for the change to take hold.
-    chrome.tabs.reload(tab.id);
+
+    // Toggle the live page instead of reloading it. The tab this shortcut is
+    // pressed in is usually an AI chat holding a half-typed prompt, and a reload
+    // throws that away — the one cost the user is certainly not asking to pay.
+    try {
+        await chrome.tabs.sendMessage(tab.id, {
+            type: 'parsi-set-enabled',
+            enabled: !next.includes(host)
+        });
+    } catch (e) {
+        // No content script listening (a tab older than the install, or a page
+        // outside the match list): a reload is the only way to apply it there.
+        chrome.tabs.reload(tab.id);
+    }
 }
 
 chrome.commands.onCommand.addListener(async (command) => {

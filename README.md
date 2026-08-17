@@ -62,8 +62,9 @@ things a CSS-only fix cannot reach.
 | **Every RTL script** | Arabic (Persian, Urdu, Pashto, Kurdish, Sindhi), Hebrew, Syriac, Thaana, N'Ko, Adlam, Samaritan, Mandaic |
 | **Every site** | AI chats, forums, docs, webmail — it no-ops where there is no RTL text |
 | **Streaming-aware** | AI answers arrive token by token; a frame-batched observer keeps up without the per-token slowdown |
-| **Code stays LTR** | `pre`, `code`, `kbd`, `samp`, tables — including inline code inside an RTL sentence |
-| **Your composer** | the input's direction updates live as you type |
+| **Code stays LTR** | `pre`, `code`, `kbd`, `samp` — including inline code inside an RTL sentence. A Persian *table* is Persian, so it follows the block |
+| **Your composer** | the input's direction updates live as you type, and a field the site already set up is left as the site set it |
+| **Off without a reload** | the per-site switch takes effect in place, so a half-typed prompt survives it |
 | **Vazirmatn, bundled** | applied only to RTL blocks and guarded by `unicode-range`, so icon fonts survive |
 | **Nothing collected** | no network requests, no analytics, no account |
 

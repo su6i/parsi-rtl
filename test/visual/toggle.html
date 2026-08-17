@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- Behaviour fixture for the parts of src/rtl.js that need a real DOM: the
+     live on/off switch, the RTL counter, the restore-the-site's-dir rule and
+     the change-detection signature. Unit tests cover decideDirection() only.
+
+     It stubs `chrome` before loading the content script, which is what gives
+     the harness a handle on the message listener — the same channel the popup
+     and the service worker use. Run it the way the other fixtures are run:
+
+       '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless \
+         --disable-gpu --virtual-time-budget=6000 --dump-dom \
+         test/visual/toggle.html | grep -o '<title>.*</title>'
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>pending</title>
+<link rel="stylesheet" href="../../src/rtl.css">
+<script>
+  // Minimal chrome stub: hand us the listener, report no disabled hosts.
+  let listener = null;
+  window.chrome = {
+    runtime: { onMessage: { addListener: (fn) => { listener = fn; } } },
+    storage: { local: { get: (keys, cb) => cb({}) } }
+  };
+  // Headless stops producing animation frames once the page goes idle, so the
+  // content script's rAF batching would never flush here. The batching itself
+  // is what is under test, not the browser's frame clock, so rAF is redirected
+  // onto the macrotask queue: every batch still runs exactly once, on a
+  // schedule the fixture can wait for deterministically.
+  window.requestAnimationFrame = (cb) => setTimeout(() => cb(0), 0);
+  window.cancelAnimationFrame = (id) => clearTimeout(id);
+
+  window.send = (message) => new Promise((resolve) => listener(message, {}, resolve));
+  window.settle = () => new Promise((r) => setTimeout(r, 20));
+  window.onerror = (m, s, l) => { document.title = 'ERROR ' + m + ' @' + l; };
+</script>
+</head>
+<body>
+  <p id="block">این یک پاسخِ کاملاً فارسی است که باید راست‌به‌چپ شود.</p>
+  <p id="latin">This block is English and must stay untouched.</p>
+  <p id="rewrite">این خط بعداً با متنی هم‌طول جایگزین می‌شود.</p>
+  <textarea id="site-rtl" dir="rtl"></textarea>
+  <textarea id="plain"></textarea>
+
+<script src="../../src/rtl.js"></script>
+<script>
+(async () => {
+ try {
+  const results = {};
+  const $ = (id) => document.getElementById(id);
+  const status = () => window.send({ type: 'parsi-status' });
+  const type = (el, value) => {
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  await window.settle();
+
+  // --- the automatic pass ------------------------------------------------
+  results.persianBlock = $('block').getAttribute('dir');            // rtl
+  results.latinUntouched = $('latin').getAttribute('dir') === null; // true
+  results.countAfterScan = (await status()).fixed;                  // 2 (block + rewrite)
+
+  // --- R-2: an empty composer keeps the dir the SITE gave it -------------
+  type($('site-rtl'), 'a');            // one letter: no signal either way
+  results.siteDirKept = $('site-rtl').getAttribute('dir');          // rtl, not null
+  type($('plain'), 'a');
+  results.plainStaysBare = $('plain').getAttribute('dir') === null;  // true
+  type($('site-rtl'), 'hello world');  // now clearly Latin: we may override
+  results.editorOverride = $('site-rtl').getAttribute('dir');        // ltr
+  type($('site-rtl'), '');             // emptied again: hand it back
+  results.siteDirRestored = $('site-rtl').getAttribute('dir');       // rtl
+
+  // --- R-5: an in-place rewrite of the EXACT same length is re-judged ----
+  // 43 characters swapped for 43 characters: the old length-only throttle saw
+  // no change at all and left the block marked RTL.
+  $('rewrite').textContent = 'This line was replaced by English same size';
+  await window.settle();
+  results.rewriteRejudged = $('rewrite').getAttribute('dir') === null; // true
+
+  // --- R-4: the counter comes back down ---------------------------------
+  results.countAfterRewrite = (await status()).fixed;                 // 1
+
+  // --- R-3: the switch works live, without a reload ---------------------
+  const off = await window.send({ type: 'parsi-set-enabled', enabled: false });
+  results.offReported = off.enabled === false;
+  results.offClearsDir = $('block').getAttribute('dir') === null;
+  results.offRestoresSiteDir = $('site-rtl').getAttribute('dir');     // rtl again
+  results.countWhenOff = (await status()).fixed;                      // 0
+
+  $('block').textContent = 'متنِ تازه‌ای که وقتی خاموش است نباید لمس شود.';
+  await window.settle();
+  results.offIgnoresMutations = $('block').getAttribute('dir') === null;
+
+  const on = await window.send({ type: 'parsi-set-enabled', enabled: true });
+  await window.settle();
+  results.onReported = on.enabled === true;
+  results.onReapplies = $('block').getAttribute('dir');               // rtl
+
+  document.title = JSON.stringify(results);
+ } catch (e) {
+  document.title = 'THREW ' + (e && e.message);
+ }
+})();
+</script>
+</body>
+</html>

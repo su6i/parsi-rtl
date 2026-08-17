@@ -51,9 +51,43 @@ First release.
 - `npm run lint:ext` (addons-linter, 0 errors, 0 warnings) and `npm run sign:firefox`,
   which reads `WEB_EXT_API_KEY` / `WEB_EXT_API_SECRET` from the environment so
   no credential is ever written into the repository.
+- `npm run test:behaviour` and `test/visual/toggle.html`, a fixture that drives
+  the content script in a real DOM against a stubbed `chrome` — the on/off
+  switch, the counter and the composer rules cannot be reached by the unit
+  tests, which only see `decideDirection()`.
+- `npm run sync:version` writes the version from `package.json` into the
+  manifest and both README badges, and a test fails the build if they drift.
+  Four hand-maintained copies of one number is a silent way to ship a stale
+  manifest to a store.
+- `minimum_chrome_version: 111`, the floor for the `color-mix()` the popup uses.
+  Below it the popup lost its borders and background with no explanation.
 
 ### Fixed
 
+- Persian tables came out with mixed alignment — long cells right-aligned, short
+  ones left-aligned, in the same row. `table` was listed with `pre`/`code` as
+  something to force back to LTR, but the inherit rule for inner nodes outranks
+  that selector on specificity (0,2,6 against 0,1,1), so only the `text-align`
+  half of the rule ever landed. A Persian table is Persian: it now follows its
+  block like any other content.
+- The per-site switch no longer reloads the tab. It wrote the setting and
+  reloaded, because the content script read the setting only at startup — which
+  threw away whatever the user was typing, in the exact situation the extension
+  is for. A `parsi-set-enabled` message now turns the running page on or off in
+  place, restoring every element it had touched; a reload remains the fallback
+  for tabs with no content script listening.
+- Typing the first letter into a composer no longer throws the caret to the
+  left. When a field held too little text to judge, the extension deleted its
+  `dir` attribute outright — including one the site had set itself, which is
+  common on Persian sites. The site's own value is now recorded on first touch
+  and put back, instead of the attribute being cleared.
+- The popup's "blocks set to RTL" counter only ever went up. A block that turned
+  Latin as the answer streamed in, or was released by the user, now decrements
+  it, so the number stays a truthful signal rather than drifting upward.
+- A block rewritten in place is re-judged. Change detection compared text
+  lengths alone, so an edited message or a translation swapped in at the same
+  length kept its old direction; it now also compares the leading characters,
+  which stays stable while an answer streams in at the end.
 - Digits are excluded from the script count. Persian digits live inside the
   Arabic Unicode block, so counting them turned a table of numbers RTL.
 - Inner nodes are forced to inherit the block's direction. A site that ships

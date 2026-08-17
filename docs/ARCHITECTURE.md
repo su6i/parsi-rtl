@@ -108,8 +108,8 @@ a cascade problem — reading the CSS is not.
 
 ## State
 
-Two keys in `chrome.storage.local`, read once at startup by the content script
-and written by the popup and the service worker:
+Two keys in `chrome.storage.local`, read at startup by the content script and
+written by the popup and the service worker:
 
 | Key | Meaning |
 | --- | --- |
@@ -120,6 +120,24 @@ The content script answers a `parsi-status` message with
 `{ host, fixed, enabled, font }`. **`enabled` is load-bearing**: the message
 listener is registered even on a site that is switched off, so a popup treating
 "got a reply" as "running" reports active when it is not. That was a real bug.
+
+Writing the setting is only half of a toggle. The other half is
+`parsi-set-enabled`, which turns the running page on or off **in place** — the
+tab is not reloaded. It was, and the cost landed on the one case the extension
+exists for: an AI chat holding a prompt the user is halfway through typing.
+Switching off disconnects the observer, drops the queued batch and hands every
+element we touched back to the site; blocks the user forced by hand survive,
+because that decision was explicit. A reload is still the fallback when no
+content script answers (a tab older than the install).
+
+Undoing is why every write goes through `writeDir()`, which records the `dir`
+the site itself had before we overwrote it and marks the element with
+`data-parsi-dir`. `restoreDir()` puts the original value back rather than
+deleting the attribute — deleting it is a regression on Persian sites that
+already ship `dir="rtl"` on their own composer.
+
+`test/visual/toggle.html` exercises all of this in a real DOM against a stubbed
+`chrome`; `npm run test:behaviour` prints the result as JSON.
 
 ## Extending it
 

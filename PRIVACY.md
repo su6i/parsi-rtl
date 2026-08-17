@@ -5,7 +5,13 @@
 Parsi RTL collects nothing. There is no analytics, no telemetry, no account, and
 no server: the extension makes **no network requests of any kind**. The font it
 applies is bundled inside the extension package rather than fetched from a CDN,
-precisely so that using the extension cannot be observed by anyone.
+so no third party — not even a font host — ever learns which pages you read.
+
+One honest caveat: the bundled font has to be readable by the page in order to
+be applied to it, which is what `web_accessible_resources` in the manifest
+declares. A site that goes looking can therefore detect that this extension is
+installed, the same way it can detect any extension that ships a web-accessible
+file. It learns nothing beyond that fact — no settings, no history, no text.
 
 ## What the extension reads
 
@@ -23,10 +29,10 @@ Two values, in `chrome.storage.local` on your own machine:
 | `parsiDisabledHosts` | list of hostnames you switched the extension off on | so the choice survives a reload |
 | `parsiFontOff` | true/false | remembers whether you turned the bundled font off |
 
-Nothing else is written. Uninstalling the extension removes both. Chrome may
-sync `chrome.storage.local` only if you have enabled extension sync in your
-Google account; that transfer is between you and Google, and the author of this
-extension has no access to it.
+Nothing else is written. Uninstalling the extension removes both. `storage.local`
+never leaves the device — it is not the synced storage area, so these two values
+are not uploaded to your Google or Mozilla account and are not carried to your
+other computers. The extension does not use `storage.sync` at all.
 
 ## Permissions and why each one exists
 

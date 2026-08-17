@@ -59,5 +59,6 @@
       "description": "Turn Parsi RTL on/off for this site"
     }
   },
-  "homepage_url": "https://github.com/su6i/parsi-rtl"
+  "homepage_url": "https://github.com/su6i/parsi-rtl",
+  "minimum_chrome_version": "111"
 }

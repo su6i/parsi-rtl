@@ -103,12 +103,19 @@ ol[data-parsi-rtl='rtl'] {
   padding-left: 0;
 }
 
-/* Code is never Persian prose. Force it back regardless of what surrounds it. */
+/* Code is never Persian prose. Force it back regardless of what surrounds it.
+ *
+ * `table` deliberately does NOT belong here. It used to, and the result was a
+ * half-applied rule: the inheritance rule above outranks this one on specificity
+ * (0,2,6 against 0,1,1) so the table kept `direction: rtl`, while `text-align`
+ * — which that rule does not set — still landed as `left`. A Persian table came
+ * out with its long cells right-aligned (they carry their own marker) and its
+ * short ones left-aligned, in the same row. A Persian table is Persian: it
+ * inherits the block's direction and alignment like any other content. */
 [data-parsi-rtl='rtl'] pre,
 [data-parsi-rtl='rtl'] code,
 [data-parsi-rtl='rtl'] kbd,
-[data-parsi-rtl='rtl'] samp,
-[data-parsi-rtl='rtl'] table {
+[data-parsi-rtl='rtl'] samp {
   direction: ltr !important;
   text-align: left !important;
   unicode-bidi: isolate !important;
