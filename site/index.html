@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8">
+  <title>Parsi RTL</title>
+  <style>
+    /* Code is excluded from the inheritance rule itself, exactly as src/rtl.css does.
+     * Fighting it with a separate `pre, code…` rule does not work: that selector is
+     * (0,0,1) against this one's (0,1,1), so even with !important on both, the inline
+     * <code> kept `direction: rtl` while text-align landed left — the half-applied
+     * rule this project already documents. */
+    body *:not([dir]):not(pre):not(code):not(kbd):not(samp):not(pre *):not(code *) { direction: inherit !important; unicode-bidi: inherit !important; }
+    [dir="ltr"] { direction: ltr !important; unicode-bidi: isolate !important; }
+    [dir="rtl"] { direction: rtl !important; unicode-bidi: isolate !important; }
+    pre, code, kbd, samp { direction: ltr !important; text-align: left !important; unicode-bidi: isolate !important; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 2rem;
+      color: #111827;
+    }
+    .demo-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .persian-demo {
+      background: #eff6ff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #bfdbfe;
+      font-size: 1.25rem;
+      line-height: 1.6;
+    }
+    .container {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      margin: 1.5rem 0;
+      display: block;
+    }
+    .features {
+      padding-inline-start: 2rem;
+    }
+    .features li {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .actions {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .btn-install {
+      background-color: #2563eb;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.4;
+    }
+    .btn-install:hover {
+      background-color: #1d4ed8;
+    }
+    .btn-install .en-text {
+      color: #bfdbfe;
+      font-size: 0.85em;
+      font-weight: normal;
+      margin-top: 0.1rem;
+    }
+    .links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .links a {
+      color: #4b5563;
+      text-decoration: none;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.4;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .links a .en-text {
+      color: #9ca3af;
+      font-size: 0.85em;
+      margin-top: 0.1rem;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    
+    .en-text {
+      color: #6b7280;
+      font-size: 0.9em;
+      margin-top: 0.25rem;
+      display: block;
+      font-weight: normal;
+    }
+    h1, h2 {
+      margin-bottom: 0.25rem;
+    }
+    h1.en-text, h2.en-text {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+    }
+    h1.en-text {
+      font-size: 1.5rem;
+    }
+    h2.en-text {
+      font-size: 1.25rem;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-wrapper">
+    <div class="persian-demo">
+      <strong>Parsi RTL ↔</strong><br>
+      جهت و تایپوگرافی صحیح برای متن‌های راست‌به‌چپ در هر سایتی — تشخیص بر اساس نسبت حروف (حتی در صورت وجود <code>identifier</code> انگلیسی در متن)، نه حدس زدن بر اساس اولین حرف.
+    </div>
+    
+    <main class="container">
+      <h1 dir="rtl" lang="fa">پارسی RTL</h1>
+      <h1 dir="ltr" lang="en" class="en-text">Parsi RTL</h1>
+      
+      <p dir="rtl" lang="fa">جهت و فونت صحیح برای زبان‌های راست‌به‌چپ در تمامی سایت‌ها — تشخیص زبان بر اساس نسبت حروف نوشته، بدون تکیه بر اولین حرف.</p>
+      <p dir="ltr" lang="en" class="en-text">Correct text direction and Persian font for RTL languages on any site — script-ratio detection, not first-strong guessing.</p>
+      
+      <img src="img/before-after.png" alt="Before and after comparison of RTL text handling">
+      <img src="img/popup.png" alt="Parsi RTL extension popup">
+      
+      <h2 dir="rtl" lang="fa">ویژگی‌ها</h2>
+      <h2 dir="ltr" lang="en" class="en-text">Features</h2>
+      
+      <ul class="features">
+        <li>
+          <div dir="rtl" lang="fa"><strong>در هر سایتی:</strong> چت‌های هوش مصنوعی، انجمن‌ها، مستندات، وب‌میل — در صفحاتی که متن راست‌به‌چپ ندارند هیچ تغییری ایجاد نمی‌کند.</div>
+          <div dir="ltr" lang="en" class="en-text"><strong>Every site:</strong> AI chats, forums, docs, webmail — it no-ops where there is no RTL text</div>
+        </li>
+        <li>
+          <div dir="rtl" lang="fa"><strong>کدها چپ‌به‌راست می‌مانند:</strong> تگ‌های <code>pre</code>، <code>code</code>، <code>kbd</code>، <code>samp</code> — شامل کدهای درون‌خطی مثل <code>identifier</code> در میان یک جمله راست‌به‌چپ.</div>
+          <div dir="ltr" lang="en" class="en-text"><strong>Code stays LTR:</strong> <code>pre</code>, <code>code</code>, <code>kbd</code>, <code>samp</code> — including inline code inside an RTL sentence.</div>
+        </li>
+        <li>
+          <div dir="rtl" lang="fa"><strong>بدون جمع‌آوری داده:</strong> بدون نیاز به شبکه، بدون ابزار تحلیل‌گر (analytics)، بدون نیاز به حساب کاربری.</div>
+          <div dir="ltr" lang="en" class="en-text"><strong>Nothing collected:</strong> no network requests, no analytics, no account</div>
+        </li>
+      </ul>
+      
+      <div class="actions">
+        <!-- TODO(T-108): switch to the store URL once published -->
+        <a href="https://github.com/su6i/parsi-rtl" class="btn-install">
+          <span dir="rtl" lang="fa">نصب افزونه</span>
+          <span dir="ltr" lang="en" class="en-text">Install</span>
+        </a>
+        <div class="links">
+          <a href="https://github.com/su6i/parsi-rtl/blob/main/PRIVACY.md">
+            <span dir="rtl" lang="fa">حریم خصوصی</span>
+            <span dir="ltr" lang="en" class="en-text">Privacy</span>
+          </a>
+          <a href="https://github.com/su6i/parsi-rtl/issues">
+            <span dir="rtl" lang="fa">گزارش مشکل</span>
+            <span dir="ltr" lang="en" class="en-text">Issues</span>
+          </a>
+        </div>
+      </div>
+      
+      <footer>
+        <div dir="rtl" lang="fa">تحت لیسانس MIT منتشر شده است.</div>
+        <div dir="ltr" lang="en" class="en-text">Released under the MIT License.</div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
