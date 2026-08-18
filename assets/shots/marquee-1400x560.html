@@ -1,0 +1,36 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-arabic-700-normal.woff2') format('woff2'); font-weight:700; unicode-range:U+0600-06FF,U+200C-200F; }
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-latin-700-normal.woff2') format('woff2'); font-weight:700; unicode-range:U+0000-00FF; }
+  body { margin:0; width:1400px; height:560px; background:linear-gradient(150deg,#172a45 0%,#0f1c2e 100%);
+         color:#fff; font:20px/1.6 -apple-system,system-ui,sans-serif;
+         display:flex; align-items:center; justify-content:center; gap:72px; }
+  .left { display:flex; flex-direction:column; gap:16px; max-width:520px; }
+  h1 { font-size:76px; margin:0; letter-spacing:-1.5px; }
+  .tag { color:#9fb3c8; font-size:24px; line-height:1.5; }
+  .meta { color:#70c7d1; font-size:18px; letter-spacing:.5px; }
+  .right { display:flex; flex-direction:column; gap:18px; width:560px; }
+  .label { font-size:15px; letter-spacing:1.5px; text-transform:uppercase; color:#9fb3c8; }
+  .demo { background:#fff; color:#111; border-radius:12px; padding:18px 22px;
+          font-family:'Vaz',sans-serif; font-size:21px; font-weight:700;
+          box-shadow:0 14px 34px rgba(0,0,0,.4); }
+  .demo * { direction:inherit; unicode-bidi:inherit; }
+  .bad  { direction:ltr; text-align:left; unicode-bidi:plaintext; }
+  .good { direction:rtl; text-align:right; unicode-bidi:isolate; }
+  .mark { font-size:15px; letter-spacing:1px; }
+  .mark.no { color:#e88; }
+  .mark.yes { color:#7fd6a2; }
+</style>
+<div class="left">
+  <h1>Parsi RTL</h1>
+  <div class="tag">Direction decided by the language of the block, not by its first letter.</div>
+  <div class="meta">Persian · Arabic · Hebrew · Urdu · Pashto · Kurdish · N'Ko · Adlam</div>
+</div>
+<div class="right">
+  <div class="label">Without the extension</div>
+  <div class="demo bad">Gemini web app رو Google سرو می‌کند</div>
+  <div class="mark no">✗ starts with Latin, so the whole line flips</div>
+  <div class="label">With the extension</div>
+  <div class="demo good">Gemini web app رو Google سرو می‌کند</div>
+  <div class="mark yes">✓ script ratio wins — the sentence reads right</div>
+</div>

@@ -30,15 +30,19 @@ parsi-rtl/
 │   └── visual/cascade.html    the fixture unit tests cannot replace
 ├── assets/
 │   ├── project_logo.svg
-│   └── shots/*.html + *.png   README screenshots, rendered from real markup
+│   └── shots/*.html + *.png   every published image, rendered from real markup
 └── docs/
     ├── ARCHITECTURE.md        this file
     └── fa/README.fa.md
 ```
 
-The two README screenshots are generated, not captured: `npm run render:shots`
-re-renders `assets/shots/*.html` with headless Chrome, so a UI change cannot
-leave the README showing something that no longer exists.
+Every image the project publishes — the two the README shows and the three the
+stores ask for — is generated, not captured: `npm run render:shots` re-renders
+all of `assets/shots/*.html` with headless Chrome at each store's required size,
+so a UI change cannot leave a listing showing something that no longer exists.
+They live in the repository because the markup loads the bundled Vazirmatn over
+a relative path; a copy kept elsewhere renders in a fallback font and nothing
+warns you.
 
 ## The decision
 

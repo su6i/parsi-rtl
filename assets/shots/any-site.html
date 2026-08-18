@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-arabic-400-normal.woff2') format('woff2'); unicode-range:U+0600-06FF,U+200C-200F; }
+  @font-face { font-family:'Vaz'; src:url('../../src/fonts/vazirmatn-latin-400-normal.woff2') format('woff2'); unicode-range:U+0000-00FF; }
+  body { margin:0; width:1280px; height:800px; background:#f6f7fb; font:16px/1.8 -apple-system,system-ui,sans-serif;
+         display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; }
+  h1 { font-size:30px; margin:0; letter-spacing:-.4px; }
+  .sub { color:#5b6472; margin:-14px 0 6px; }
+  .win { width:980px; background:#fff; border-radius:14px; box-shadow:0 10px 34px rgba(20,30,50,.12); overflow:hidden; }
+  .bar { background:#f0f2f7; padding:9px 16px; font-size:12.5px; color:#5b6472; display:flex; gap:8px; align-items:center; }
+  .dot { width:10px; height:10px; border-radius:50%; }
+  .msg { padding:20px 26px; }
+  .rtl { direction:rtl!important; text-align:right!important; unicode-bidi:isolate!important; font-family:'Vaz',sans-serif; }
+  .rtl * { direction:inherit!important; unicode-bidi:inherit!important; }
+  pre, code { direction:ltr!important; text-align:left!important; unicode-bidi:isolate!important;
+              font-family:ui-monospace,Menlo,monospace; }
+  pre { background:#0f172a; color:#e2e8f0; padding:14px 16px; border-radius:9px; font-size:13.5px; overflow:auto; }
+  code { background:#eef1f6; padding:1px 5px; border-radius:4px; font-size:14px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; color:#5b6472; font-size:14px; }
+  .chip { background:#fff; border:1px solid #dfe3ea; border-radius:999px; padding:5px 13px; }
+</style>
+<h1>Every site, every RTL language</h1>
+<div class="sub">Persian · Arabic · Urdu · Pashto · Kurdish · Hebrew · Syriac · Dhivehi</div>
+<div class="win">
+  <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-inline-start:8px">any chat, forum, docs page or webmail</span></div>
+  <div class="msg">
+    <p class="rtl">برای پچ کردن یک اپ Electron باید هشِ <code>header</code> را در <code>Info.plist</code> بنویسی، نه هشِ کلِ فایل — وگرنه اپ موقعِ اجرا crash می‌کند.</p>
+    <pre>const hash = sha256(getRawHeader(asarPath).headerString);</pre>
+    <p class="rtl">کد و شناسه‌ها همیشه چپ‌به‌راست می‌مانند؛ فقط متنِ فارسی جهت می‌گیرد.</p>
+  </div>
+</div>
+<div class="chips"><span class="chip">no network requests</span><span class="chip">nothing collected</span><span class="chip">per-site off switch</span><span class="chip">font bundled, not fetched</span></div>
