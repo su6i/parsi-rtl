@@ -171,7 +171,7 @@ run in both browsers, but Chrome then logs
 the Chrome Web Store validator sees an MV2 key in an MV3 submission.
 
 So `manifest.json` is Chrome's and stays canonical — it is what `load unpacked`
-reads and what `npm run package` zips. Firefox's is *derived*, never a second
+reads and what `npm run package:chrome` zips. Firefox's is *derived*, never a second
 copy: `tools/stage-firefox.mjs` replaces the top-level keys listed in
 `tools/firefox.overrides.json` (`background`, `browser_specific_settings`) and
 writes `build/firefox/`. `test/manifest.test.js` fails if the two ever differ in
@@ -197,6 +197,17 @@ the whole setup and a checkout lints identically on any machine — nothing is
 read from the global `PATH`:
 
 ```bash
-npm test               # node --test — 14 tests
+npm test               # node --test — 15 tests
 npm run lint:md        # markdownlint over README, docs/, CHANGELOG, PRIVACY
+```
+
+Packaging writes outside the working tree, into `~/Downloads`, because a build
+artefact is not source. Each store gets its own suffixed file so the two cannot
+be confused at upload time — they differ only in the `background` key and look
+identical otherwise:
+
+```bash
+npm run package        # both of the below
+npm run package:chrome # parsi-rtl-<version>-chrome.zip  — manifest.json + src/
+npm run package:firefox# parsi-rtl-<version>-firefox.zip — zips build/firefox/
 ```
